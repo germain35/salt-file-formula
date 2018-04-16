@@ -1,0 +1,20 @@
+file:
+  
+  directory:
+    - name: /opt
+      mode: 755
+
+  recurse:
+    - name: /opt
+      source: salt://file/directory
+      makedirs: True
+
+  managed:
+    - name: /opt/script.sh
+      source: salt://file/directory/script.sh
+      source_hash: salt://file/directory/script.sh.md5
+      mode: 755
+    
+  symlink:
+    - name: /opt/symlink.sh
+      taget: /opt/script.sh

@@ -6,7 +6,7 @@
     source: {{recurse.source}}
     {%- if recurse.template is defined %}
     - template: {{recurse.template}}
-    {%- endfor %}
+    {%- endif %}
     {%- if recurse.user is defined %}
     - user: {{recurse.user}}
     {%- endif %}

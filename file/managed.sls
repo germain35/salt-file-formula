@@ -8,10 +8,10 @@
     - source_hash: {{managed.source_hash}}
     {%- else %}
     - skip_verify: True
-    {%- endfor %}
+    {%- endif %}
     {%- if managed.template is defined %}
     - template: {{managed.template}}
-    {%- endfor %}
+    {%- endif %}
     {%- if managed.user is defined %}
     - user: {{managed.user}}
     {%- endif %}

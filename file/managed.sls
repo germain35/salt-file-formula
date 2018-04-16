@@ -3,7 +3,7 @@
 {%- for managed in file.get('managed', []) %}
 {{managed.name}}:
   file.managed:
-    source: {{managed.source}}
+    - source: {{managed.source}}
     {%- if managed.source_hash is defined %}
     - source_hash: {{managed.source_hash}}
     {%- else %}

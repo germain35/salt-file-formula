@@ -3,7 +3,7 @@
 {%- for recurse in file.get('recurse', []) %}
 {{recurse.name}}:
   file.recurse:
-    source: {{recurse.source}}
+    - source: {{recurse.source}}
     {%- if recurse.template is defined %}
     - template: {{recurse.template}}
     {%- endif %}

@@ -28,4 +28,10 @@
     {%- if recurse.replace is defined %}
     - replace: {{recurse.replace}}
     {%- endif %}
+    {%- if recurse.defaults is defined %}
+    - defaults: {{recurse.defaults}}
+    {%- endif %}
+    {%- if recurse.context is defined %}
+    - context: {{recurse.context}}
+    {%- endif %}
 {%- endfor %}

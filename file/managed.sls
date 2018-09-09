@@ -3,7 +3,9 @@
 {%- for managed in file.get('managed', []) %}
 {{managed.name}}:
   file.managed:
+    {%- if managed.source is defined %}
     - source: {{managed.source}}
+    {%- endif %}
     {%- if managed.source_hash is defined %}
     - source_hash: {{managed.source_hash}}
     {%- else %}
@@ -24,6 +26,9 @@
     {%- if managed.mode is defined %}
     - mode: {{managed.mode}}
     {%- endif %}
+    {%- if managed.defaults is defined %}
+    - defaults: {{managed.defaults}}
+    {%- endif %}
     {%- if managed.context is defined %}
     - context: {{managed.context}}
     {%- endif %}
@@ -38,6 +43,14 @@
     {%- endif %}
     {%- if managed.create is defined %}
     - create: {{managed.create}}
+    {%- endif %}
+    {%- if managed.contents is defined %}
+      {%- if managed.contents is list %}
+    - contents: {{managed.contents}}
+      {%- else %}
+    - contents: |
+        {{managed.contents | indent(8)}}
+      {%- endif %}
     {%- endif %}
     {%- if managed.contents_pillar is defined %}
     - contents_pillar: {{managed.contents_pillar}}

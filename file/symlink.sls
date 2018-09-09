@@ -3,13 +3,13 @@
 {%- for symlink in file.get('symlink', []) %}
 {{symlink.name}}:
   file.symlink:
-    target: {{symlink.target}}
+    - target: {{symlink.target}}
     {%- if symlink.user is defined %}
     - user: {{symlink.user}}
     {%- endif %}
     {%- if symlink.group is defined %}
     - group: {{symlink.group}}
-    {%- endif %
+    {%- endif %}
     {%- if symlink.mode is defined %}
     - mode: {{symlink.mode}}
     {%- endif %}

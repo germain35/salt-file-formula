@@ -17,4 +17,4 @@ file:
     
   symlink:
     - name: /opt/symlink.sh
-      taget: /opt/script.sh
+      target: /opt/script.sh

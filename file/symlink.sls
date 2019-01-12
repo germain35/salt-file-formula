@@ -1,22 +1,21 @@
 {%- from "file/map.jinja" import file with context %}
 
-{%- for symlink in file.get('symlink', []) %}
-{{symlink.name}}:
-  file.symlink:
-    - target: {{symlink.target}}
-    {%- if symlink.user is defined %}
-    - user: {{symlink.user}}
-    {%- endif %}
-    {%- if symlink.group is defined %}
-    - group: {{symlink.group}}
-    {%- endif %}
-    {%- if symlink.mode is defined %}
-    - mode: {{symlink.mode}}
-    {%- endif %}
-    {%- if symlink.makedirs is defined %}
-    - makedirs: {{symlink.makedirs}}
-    {%- endif %}
-    {%- if symlink.force is defined %}
-    - force: {{symlink.force}}
-    {%- endif %}
-{%- endfor %}
+{%- set symlink = file.get('symlink', {}) %}
+
+{% if symlink is mapping %}
+  {%- for key, params in symlink.items() %}
+{{key}}:
+  file.symlink: 
+    {%- for param, value in params.items() %}
+    - {{param}}: {{value}}
+    {%- endfor %}
+  {%- endfor %}
+{%- elif symlink is list %}
+  {%- for params in symlink %}
+file_symlink_{{loop.index}}:
+  file.symlink: 
+    {%- for param, value in params.items() %}
+    - {{param}}: {{value}}
+    {%- endfor %}
+  {%- endfor %}
+{%- endif %}

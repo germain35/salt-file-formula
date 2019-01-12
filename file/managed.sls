@@ -1,64 +1,31 @@
 {%- from "file/map.jinja" import file with context %}
 
-{%- for managed in file.get('managed', []) %}
-{{managed.name}}:
-  file.managed:
-    {%- if managed.source is defined %}
-    - source: {{managed.source}}
-    {%- endif %}
-    {%- if managed.source_hash is defined %}
-    - source_hash: {{managed.source_hash}}
-    {%- else %}
-    - skip_verify: True
-    {%- endif %}
-    {%- if managed.template is defined %}
-    - template: {{managed.template}}
-    {%- endif %}
-    {%- if managed.user is defined %}
-    - user: {{managed.user}}
-    {%- endif %}
-    {%- if managed.group is defined %}
-    - group: {{managed.group}}
-    {%- endif %}
-    {%- if managed.dir_mode is defined %}
-    - dir_mode: {{managed.dir_mode}}
-    {%- endif %}
-    {%- if managed.mode is defined %}
-    - mode: {{managed.mode}}
-    {%- endif %}
-    {%- if managed.defaults is defined %}
-    - defaults: {{managed.defaults}}
-    {%- endif %}
-    {%- if managed.context is defined %}
-    - context: {{managed.context}}
-    {%- endif %}
-    {%- if managed.makedirs is defined %}
-    - makedirs: {{managed.makedirs}}
-    {%- endif %}
-    {%- if managed.clean is defined %}
-    - clean: {{managed.clean}}
-    {%- endif %}
-    {%- if managed.replace is defined %}
-    - replace: {{managed.replace}}
-    {%- endif %}
-    {%- if managed.create is defined %}
-    - create: {{managed.create}}
-    {%- endif %}
-    {%- if managed.contents is defined %}
-      {%- if managed.contents is list %}
-    - contents: {{managed.contents}}
+{%- set managed = file.get('managed', {}) %}
+
+{% if managed is mapping %}
+  {%- for key, params in managed.items() %}
+{{key}}:
+  file.managed: 
+    {%- for param, value in params.items() %}
+      {%- if param == 'contents' and value is not list %}
+    - {{param}}: |
+        {{value|indent(8)}}
       {%- else %}
-    - contents: |
-        {{managed.contents | indent(8)}}
+    - {{param}}: {{value}}
       {%- endif %}
-    {%- endif %}
-    {%- if managed.contents_pillar is defined %}
-    - contents_pillar: {{managed.contents_pillar}}
-    {%- endif %}
-    {%- if managed.contents_grains is defined %}
-    - contents_grains: {{managed.contents_grains}}
-    {%- endif %}
-    {%- if managed.force is defined %}
-    - force: {{managed.force}}
-    {%- endif %}
-{%- endfor %}
+    {%- endfor %}
+  {%- endfor %}
+{%- elif managed is list %}
+  {%- for params in managed %}
+file_managed_{{loop.index}}:
+  file.managed: 
+    {%- for param, value in params.items() %}
+      {%- if param == 'contents' and value is not list %}
+    - {{param}}: |
+        {{value|indent(8)}}
+      {%- else %}
+    - {{param}}: {{value}}
+      {%- endif %}
+    {%- endfor %}
+  {%- endfor %}
+{%- endif %}

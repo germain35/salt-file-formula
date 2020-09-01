@@ -10,6 +10,9 @@ include:
   {%- if file.managed is defined %}
   - file.managed
   {%- endif %}
+  {%- if file.append is defined %}
+  - file.append
+  {%- endif %}
   {%- if file.symlink is defined %}
   - file.symlink
   {%- endif %}
